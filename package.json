@@ -4,7 +4,10 @@
   "description": "Este é um repositório que contempla um teste feito para o processo seletivo da empresa Jitterbit",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger-autogen": "node swagger.js",
+    "prestart": "npm run swagger-autogen",
+    "start": "node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,8 @@
   "homepage": "https://github.com/LuizFCabral/jitterbit-test-api#readme",
   "dependencies": {
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }
