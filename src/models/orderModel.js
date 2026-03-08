@@ -31,10 +31,59 @@ async function getOrderById(orderId) {
     return res.rows;
 }
 
+async function createOrder(orderData) {
+    const client = await pool.connect(); // Trava um cliente para gerenciar a transação
+
+    try {
+        await client.query('BEGIN');
+
+        // 1. Inserir na tabela "Order"
+        const orderQuery = `
+            INSERT INTO "Order" (orderId, value, creationDate) 
+            VALUES ($1, $2, $3) 
+            RETURNING orderId
+        `;
+        const orderValues = [
+            orderData.numeroPedido, 
+            orderData.valorTotal, 
+            orderData.dataCriacao
+        ];
+        
+        const responseOrder = await client.query(orderQuery, orderValues);
+        const savedOrderId = responseOrder.rows[0].orderid;
+
+        // 2. Inserir os Itens
+        const itemQuery = `
+            INSERT INTO Items (orderId, productId, quantity, price) 
+            VALUES ($1, $2, $3, $4)
+        `;
+
+        for (const item of orderData.items) {
+            const itemValues = [
+                savedOrderId,
+                item.idItem,
+                item.quantidadeItem,
+                item.valorItem
+            ];
+            await client.query(itemQuery, itemValues);
+        }
+
+        await client.query('COMMIT'); 
+        return savedOrderId;
+
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Erro na transação de pedido:', error);
+        throw error;
+    } finally {
+        client.release(); // Libera o cliente de volta para o pool
+    }
+}
 
 
 
 export default {
     getOrders, 
     getOrderById,
+    createOrder
 };

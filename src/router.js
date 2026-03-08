@@ -12,4 +12,6 @@ router.get('/orders/list', orders.getOrders);
 
 router.get('/orders/:orderId', orders.getOrderById);
 
+router.post('/orders', orders.createOrder);
+
 export default router;

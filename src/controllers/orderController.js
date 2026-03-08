@@ -59,12 +59,29 @@ async function getOrderById(req, res) {
     }
 }
 
+async function createOrder(req, res) {
+    const { numeroPedido, valorTotal, dataCriacao, items } = req.body;
 
+    if (!numeroPedido || !valorTotal || !dataCriacao || !items || !Array.isArray(items)) {
+        return res.status(400).json({ 
+            error: 'Dados insuficientes.' 
+        });
+    }
+    
+    try {
+        const orderId = await orderModel.createOrder(req.body);
+        return res.status(201).json({ message: 'Order created successfully', orderId });
+    } catch (error) {
+        console.error('Error creating order:', error);
+        return res.status(500).json({ error: 'Erro to create order' });
+    }
+}
 
 
 
 
 export default {
     getOrders,
-    getOrderById
+    getOrderById,
+    createOrder
 };
