@@ -3,23 +3,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-async function connect() {
-    if (global.connection) {
-        return global.connection.connect();
-    }
+const pool = new Pool({
+    connectionString: process.env.CONNECTION_STRING,
+});
 
-    const pool = new Pool({
-        connectionString: process.env.CONNECTION_STRING,
-    });
+pool.query('SELECT NOW()')
+    .then(res => console.log('Conectado ao banco em:', res.rows[0].now))
+    .catch(err => console.error('Erro ao conectar ao banco:', err));
 
-    const client = await pool.connect();
-    console.log("Pool created!");
-    
-    const res = await client.query('SELECT NOW()');
-    console.log(res.rows[0]);
 
-    global.connection = pool;
-    return pool.connect();
-}
-
-export default connect; 
+export default pool; 
