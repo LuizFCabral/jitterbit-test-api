@@ -10,5 +10,6 @@ router.get('/', (req, res) => {
 
 router.get('/orders/list', orders.getOrders);
 
+router.get('/orders/:orderId', orders.getOrderById);
 
 export default router;

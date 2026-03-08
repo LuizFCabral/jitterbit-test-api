@@ -38,8 +38,33 @@ async function getOrders(_req, res) {
 
 }
 
+async function getOrderById(req, res) {
+    const { orderId } = req.params;
+    try {
+        console.log(orderId);
+        
+        const orderData = await orderModel.getOrderById(orderId);
+        console.log(orderData);
+        
+        if (!orderData || orderData.length === 0) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        const orderMap = groupOrdersById(orderData);
+
+        return res.status(200).json({ order: orderMap[0], message: 'Order retrieved successfully' });
+    } catch (error) {
+        console.error('Error fetching order:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+
+
+
 
 export default {
     getOrders,
-    
+    getOrderById
 };
