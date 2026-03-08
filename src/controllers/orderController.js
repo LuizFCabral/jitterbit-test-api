@@ -77,11 +77,21 @@ async function createOrder(req, res) {
     }
 }
 
-
+async function deleteOrder(req, res) {
+    const { orderId } = req.params;
+    try {
+        const result = await orderModel.deleteOrder(orderId);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 
 export default {
     getOrders,
     getOrderById,
-    createOrder
+    createOrder,
+    deleteOrder
 };

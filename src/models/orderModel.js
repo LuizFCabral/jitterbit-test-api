@@ -80,10 +80,20 @@ async function createOrder(orderData) {
     }
 }
 
-
+async function deleteOrder(orderId) {
+    try {
+        await pool.query('DELETE FROM "Order" WHERE orderId = $1', [orderId])
+        return { message: 'Order deleted successfully' };
+    }
+    catch (error) {
+        console.error('Erro ao deletar pedido:', error);
+        throw error;
+    }
+}
 
 export default {
     getOrders, 
     getOrderById,
-    createOrder
+    createOrder,
+    deleteOrder
 };
