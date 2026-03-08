@@ -1,0 +1,25 @@
+{
+  "name": "jitterbit-test-api",
+  "version": "1.0.0",
+  "description": "Este é um repositório que contempla um teste feito para o processo seletivo da empresa Jitterbit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuizFCabral/jitterbit-test-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/LuizFCabral/jitterbit-test-api/issues"
+  },
+  "homepage": "https://github.com/LuizFCabral/jitterbit-test-api#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
