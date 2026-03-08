@@ -8,6 +8,7 @@
     "swagger-autogen": "node swagger.js",
     "prestart": "npm run swagger-autogen",
     "start": "node ./src/server.js",
+    "predev": "npm run swagger-autogen",
     "dev":  "npx nodemon ./src/server.js"
   },
   "repository": {

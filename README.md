@@ -20,21 +20,21 @@ Esta é uma API básica construída com Node.js e PostgreSQL para o gerenciament
 Para inicializar o banco de dados, execute os comandos SQL abaixo. O script cria a tabela de pedidos (Order) e a tabela de itens relacionados (Items), garantindo a integridade dos dados com chaves estrangeiras.
 
 ```SQL
+-- Criação da tabela de Pedidos (Order)
 
--- Criação da tabela de Pedidos
 CREATE TABLE "Order" (
-    orderId SERIAL PRIMARY KEY,
+    orderId VARCHAR(50) PRIMARY KEY, 
     value DECIMAL(10, 2) NOT NULL,
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    creationDate TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Criação da tabela de Itens
+-- Criação da tabela de Itens (Items)
 CREATE TABLE Items (
-    orderId INTEGER REFERENCES "Order"(orderId) ON DELETE CASCADE,
-    productId INTEGER NOT NULL,
+    orderId VARCHAR(50) REFERENCES "Order"(orderId) ON DELETE CASCADE,
+    productId VARCHAR(50) NOT NULL, -- Também alterado para VARCHAR caso o ID do produto tenha letras
     quantity INTEGER NOT NULL CHECK (quantity > 0),
     price DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (orderId, productId)
+    PRIMARY KEY (orderId, productId) -- Chave primária composta para evitar itens duplicados no mesmo pedido
 );
 ```
 

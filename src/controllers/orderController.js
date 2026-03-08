@@ -88,10 +88,37 @@ async function deleteOrder(req, res) {
     }
 }
 
+async function updateOrder(req, res) {
+    const { orderId } = req.params;
+    const { numeroPedido, valorTotal, dataCriacao } = req.body;
+
+    const order = await orderModel.getOrderById(orderId);
+
+    if (!order || order.length === 0) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+
+    const orderMap = {
+        ...order[0],
+        numeroPedido,
+        valorTotal,
+        dataCriacao
+    };
+
+    try {
+        const result = await orderModel.updateOrder(orderId, orderMap);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error updating order:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 
 export default {
     getOrders,
     getOrderById,
     createOrder,
-    deleteOrder
+    deleteOrder,
+    updateOrder
 };

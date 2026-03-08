@@ -16,4 +16,6 @@ router.post('/orders', orders.createOrder);
 
 router.delete('/orders/:orderId', orders.deleteOrder);
 
+router.put('/orders/:orderId', orders.updateOrder);
+
 export default router;

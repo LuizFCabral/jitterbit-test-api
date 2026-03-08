@@ -91,9 +91,39 @@ async function deleteOrder(orderId) {
     }
 }
 
+async function updateOrder(orderId, orderData) {
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+        // Atualizar a tabela "Order"
+        const orderQuery = `
+            UPDATE "Order"
+            SET value = $1, creationDate = $2
+            WHERE orderId = $3
+        `;
+        const orderValues = [
+            parseFloat(orderData.valorTotal), 
+            orderData.dataCriacao, 
+            orderId
+        ];
+        await client.query(orderQuery, orderValues);
+
+        await client.query('COMMIT');
+        return { message: 'Order updated successfully' };
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error('Error updating order:', error);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
 export default {
     getOrders, 
     getOrderById,
     createOrder,
-    deleteOrder
+    deleteOrder,
+    updateOrder
 };
