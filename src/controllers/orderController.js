@@ -46,7 +46,7 @@ async function getOrders(_req, res) {
         return res.status(200).json({ orders: ordersMap, message: 'Orders retrieved successfully' });
     } catch (error) {
         console.error('Error fetching orders:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: `Error fetching orders: ${error}` });
     }
 
 }
@@ -68,7 +68,7 @@ async function getOrderById(req, res) {
         return res.status(200).json({ order: orderMap[0], message: 'Order retrieved successfully' });
     } catch (error) {
         console.error('Error fetching order:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: `Error fetching orders: ${error}`  });
     }
 }
 
@@ -95,7 +95,7 @@ async function createOrder(req, res) {
 
     if (!dataMapped.numeroPedido || !dataMapped.valorTotal || !dataMapped.dataCriacao || !dataMapped.items || !Array.isArray(dataMapped.items)) {
         return res.status(400).json({ 
-            error: 'Dados insuficientes.' 
+            error: 'Not Enough Data' 
         });
     }
     
@@ -104,7 +104,7 @@ async function createOrder(req, res) {
         return res.status(201).json({ message: 'Order created successfully', orderId });
     } catch (error) {
         console.error('Error creating order:', error);
-        return res.status(500).json({ error: 'Erro to create order' });
+        return res.status(500).json({ error: `Error creating orders: ${error}`  });
     }
 }
 
@@ -115,7 +115,7 @@ async function deleteOrder(req, res) {
         return res.status(200).json(result);
     } catch (error) {
         console.error('Error deleting order:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: `Error deleting order: ${error}`  });
     }
 }
 
@@ -159,7 +159,7 @@ async function updateOrder(req, res) {
         return res.status(200).json(result);
     } catch (error) {
         console.error('Error updating order:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: `Error updating order: ${error}`  });
     }
 }
 
