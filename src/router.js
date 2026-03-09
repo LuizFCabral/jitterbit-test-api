@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Jitterbit Test API!' });
 });
 
-router.get('/orders/list', orders.getOrders);
+router.get('/orders/list', orders.getOrders  ); 
 
 router.get('/orders/:orderId', orders.getOrderById);
 

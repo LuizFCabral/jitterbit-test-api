@@ -88,17 +88,41 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Dados do pedido (Aceita formato PT ou EN)",
             "schema": {
               "type": "object",
               "properties": {
                 "numeroPedido": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "v10089015vdb-01"
                 },
                 "valorTotal": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 10000
                 },
                 "dataCriacao": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "2023-07-19T12:24:11.5299601+00:00"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idItem": {
+                        "type": "string",
+                        "example": "2434"
+                      },
+                      "quantidadeItem": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "valorItem": {
+                        "type": "number",
+                        "example": 1000
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -124,20 +148,41 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Dados do pedido (Aceita formato PT ou EN)",
             "schema": {
               "type": "object",
               "properties": {
                 "numeroPedido": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "v10089015vdb-01"
                 },
                 "valorTotal": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 10000
                 },
                 "dataCriacao": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "2023-07-19T12:24:11.5299601+00:00"
                 },
                 "items": {
-                  "example": "any"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "idItem": {
+                        "type": "string",
+                        "example": "2434"
+                      },
+                      "quantidadeItem": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "valorItem": {
+                        "type": "number",
+                        "example": 1000
+                      }
+                    }
+                  }
                 }
               }
             }

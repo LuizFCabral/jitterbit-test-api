@@ -22,6 +22,19 @@ function groupOrdersById(ordersList) {
     return Object.values(ordersMap);
 }
 
+function mapFields(data) {
+    return {
+        numeroPedido: data.numeroPedido ?? data.orderId,
+        valorTotal: data.valorTotal ?? data.value,
+        dataCriacao: data.dataCriacao ?? data.creationDate,
+        items: (data.items || []).map(item => ({
+            idItem: item.productId ?? item.idItem,
+            quantidadeItem: item.quantity ?? item.quantidadeItem,
+            valorItem: item.price ?? item.valorItem
+        }))
+    };
+};
+    
 async function getOrders(_req, res) {
     try {
         const ordersList = await orderModel.getOrders();
@@ -60,16 +73,34 @@ async function getOrderById(req, res) {
 }
 
 async function createOrder(req, res) {
-    const { numeroPedido, valorTotal, dataCriacao, items } = req.body;
+   /* #swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Dados do pedido (Aceita formato PT ou EN)',
+            schema: {
+                "numeroPedido": "v10089015vdb-01",
+                "valorTotal": 10000,
+                "dataCriacao": "2023-07-19T12:24:11.5299601+00:00",
+                "items": [
+                    {
+                        "idItem": "2434",
+                        "quantidadeItem": 1,
+                        "valorItem": 1000
+                    }
+                ]
+            }
+    } */
+    const data = req.body;
 
-    if (!numeroPedido || !valorTotal || !dataCriacao || !items || !Array.isArray(items)) {
+    const dataMapped = mapFields(data);    
+
+    if (!dataMapped.numeroPedido || !dataMapped.valorTotal || !dataMapped.dataCriacao || !dataMapped.items || !Array.isArray(dataMapped.items)) {
         return res.status(400).json({ 
             error: 'Dados insuficientes.' 
         });
     }
     
     try {
-        const orderId = await orderModel.createOrder(req.body);
+        const orderId = await orderModel.createOrder(dataMapped);
         return res.status(201).json({ message: 'Order created successfully', orderId });
     } catch (error) {
         console.error('Error creating order:', error);
@@ -89,8 +120,26 @@ async function deleteOrder(req, res) {
 }
 
 async function updateOrder(req, res) {
+    /* #swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Dados do pedido (Aceita formato PT ou EN)',
+            schema: {
+                "numeroPedido": "v10089015vdb-01",
+                "valorTotal": 10000,
+                "dataCriacao": "2023-07-19T12:24:11.5299601+00:00",
+                "items": [
+                    {
+                        "idItem": "2434",
+                        "quantidadeItem": 1,
+                        "valorItem": 1000
+                    }
+                ]
+            }
+    } */
     const { orderId } = req.params;
-    const { numeroPedido, valorTotal, dataCriacao } = req.body;
+    const orderData = req.body;
+
+    const dataMapped = mapFields(orderData);
 
     const order = await orderModel.getOrderById(orderId);
 
@@ -100,9 +149,9 @@ async function updateOrder(req, res) {
 
     const orderMap = {
         ...order[0],
-        numeroPedido,
-        valorTotal,
-        dataCriacao
+        numeroPedido: dataMapped.numeroPedido,
+        valorTotal: dataMapped.valorTotal,
+        dataCriacao: dataMapped.dataCriacao
     };
 
     try {
